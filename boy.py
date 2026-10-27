@@ -4,6 +4,8 @@ import time
 from pico2d import load_image
 from transitions import Machine
 
+from auto_run import AutoRun
+
 
 class Boy:
     IDLE_TIMEOUT = 5.0
@@ -23,9 +25,10 @@ class Boy:
         self.last_update_at = self.idle_since
         self.run_animation_elapsed = 0.0
         self.image = load_image('animation_sheet.png')
+        self.auto_run = AutoRun(self)
         self.machine = Machine(
             model=self,
-            states=['IDLE', 'RUN', 'SLEEP'],
+            states=['IDLE', 'RUN', 'SLEEP', 'AUTO_RUN'],
             initial='IDLE',
             transitions=[
                 {'trigger': 'start_run', 'source': 'IDLE', 'dest': 'RUN', 'after': 'reset_run_animation'},
@@ -33,6 +36,9 @@ class Boy:
                 {'trigger': 'stop_run', 'source': 'RUN', 'dest': 'IDLE', 'after': 'reset_idle_timer'},
                 {'trigger': 'fall_asleep', 'source': 'IDLE', 'dest': 'SLEEP', 'after': 'freeze_sleep_frame'},
                 {'trigger': 'wake_up', 'source': 'SLEEP', 'dest': 'IDLE', 'after': 'reset_idle_timer'},
+                {'trigger': 'start_auto_run', 'source': 'IDLE', 'dest': 'AUTO_RUN', 'after': 'enter_auto_run'},
+                {'trigger': 'cancel_auto_run', 'source': 'AUTO_RUN', 'dest': 'RUN', 'after': 'reset_run_animation'},
+                {'trigger': 'finish_auto_run', 'source': 'AUTO_RUN', 'dest': 'IDLE', 'after': 'reset_idle_timer'},
             ],
             auto_transitions=False,
         )
@@ -52,12 +58,17 @@ class Boy:
                 self.MIN_X,
                 min(self.MAX_X, self.x + self.face_dir * self.RUN_SPEED * delta_time),
             )
-            self.run_animation_elapsed += delta_time
-            while self.run_animation_elapsed >= self.RUN_FRAME_DURATION:
-                self.frame = (self.frame + 1) % 8
-                self.run_animation_elapsed -= self.RUN_FRAME_DURATION
+            self.advance_run_animation(delta_time)
+        elif self.state == 'AUTO_RUN':
+            self.auto_run.update(delta_time, now)
 
     def on_direction_key_down(self, direction):
+        if self.state == 'AUTO_RUN':
+            if direction not in self.pressed_directions:
+                self.pressed_directions.append(direction)
+            self.face_dir = direction
+            self.cancel_auto_run()
+            return
         if self.state not in ('IDLE', 'RUN', 'SLEEP'):
             return
         if direction not in self.pressed_directions:
@@ -82,9 +93,22 @@ class Boy:
         if self.state == 'SLEEP':
             self.wake_up()
 
+    def on_auto_run_key_down(self):
+        if self.state == 'IDLE':
+            self.start_auto_run()
+
+    def enter_auto_run(self):
+        self.auto_run.enter(time.monotonic())
+
     def reset_run_animation(self):
         self.frame = 0
         self.run_animation_elapsed = 0.0
+
+    def advance_run_animation(self, delta_time):
+        self.run_animation_elapsed += delta_time
+        while self.run_animation_elapsed >= self.RUN_FRAME_DURATION:
+            self.frame = (self.frame + 1) % 8
+            self.run_animation_elapsed -= self.RUN_FRAME_DURATION
 
     def freeze_sleep_frame(self):
         self.frame = 0
