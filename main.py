@@ -13,6 +13,8 @@ def handle_events(boy):
                 return False
             if event.key == SDLK_SPACE:
                 boy.on_space()
+            elif event.key == SDLK_a:
+                boy.on_auto_run_key_down()
             elif event.key == SDLK_LEFT:
                 boy.on_direction_key_down(-1)
             elif event.key == SDLK_RIGHT:
