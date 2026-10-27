@@ -125,9 +125,18 @@ class Boy:
             )
             return
 
-        if self.state == 'RUN':
+        if self.state in ('RUN', 'AUTO_RUN'):
             sprite_bottom = 100 if self.face_dir == 1 else 0
-            self.image.clip_draw(self.frame * 100, sprite_bottom, 100, 100, self.x, self.y)
+            if self.state == 'AUTO_RUN':
+                draw_size = self.FRAME_WIDTH * self.auto_run.DRAW_SCALE
+                self.image.clip_draw(
+                    self.frame * 100, sprite_bottom, 100, 100,
+                    self.x, self.y, draw_size, draw_size,
+                )
+            else:
+                self.image.clip_draw(
+                    self.frame * 100, sprite_bottom, 100, 100, self.x, self.y,
+                )
             return
 
         if self.face_dir == 1:
