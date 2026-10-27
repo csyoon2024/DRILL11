@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="620" viewBox="0 0 1080 620" role="img" aria-labelledby="title description">
+  <title id="title">소년 캐릭터 상태 다이어그램</title>
+  <desc id="description">IDLE, RUN, SLEEP, AUTO_RUN 상태와 키 입력 및 시간에 따른 전이</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#526176"/>
+    </marker>
+    <style>
+      text { font-family: "Segoe UI", "Malgun Gothic", sans-serif; fill: #172033; }
+      .edge { fill: none; stroke: #526176; stroke-width: 2.5; marker-end: url(#arrow); }
+      .label { font-size: 15px; font-weight: 600; }
+      .hint { font-size: 14px; fill: #526176; }
+      .state { stroke-width: 2.5; }
+      .state-name { font-size: 22px; font-weight: 700; text-anchor: middle; }
+      .state-detail { font-size: 14px; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect width="1080" height="620" rx="18" fill="#f7f9fc"/>
+  <text x="540" y="52" text-anchor="middle" font-size="28" font-weight="700">캐릭터 상태 다이어그램</text>
+  <text x="540" y="80" text-anchor="middle" class="hint">키 입력 또는 경과 시간에 따라 상태가 전환됩니다</text>
+
+  <circle cx="48" cy="248" r="10" fill="#172033"/>
+  <path class="edge" d="M 62 248 L 110 248"/>
+
+  <path class="edge" d="M 290 248 L 430 248"/>
+  <text x="360" y="230" text-anchor="middle" class="label">← / → 누름</text>
+
+  <path class="edge" d="M 430 270 C 395 342, 325 342, 290 270"/>
+  <text x="360" y="334" text-anchor="middle" class="label">방향키 모두 뗌</text>
+
+  <path class="edge" d="M 205 208 C 300 112, 755 112, 850 208"/>
+  <text x="528" y="132" text-anchor="middle" class="label">A 키</text>
+
+  <path class="edge" d="M 850 286 C 770 378, 590 378, 515 286"/>
+  <text x="682" y="367" text-anchor="middle" class="label">← / → 누름</text>
+
+  <path class="edge" d="M 205 288 C 246 375, 370 428, 445 444"/>
+  <text x="292" y="382" text-anchor="middle" class="label">5초 입력 없음</text>
+
+  <path class="edge" d="M 445 452 C 330 475, 185 405, 184 290"/>
+  <text x="300" y="454" text-anchor="middle" class="label">Space</text>
+
+  <path class="edge" d="M 520 410 L 520 294"/>
+  <text x="590" y="360" class="label">← / → 누름</text>
+
+  <rect class="state" x="110" y="208" width="180" height="80" rx="18" fill="#dbeafe" stroke="#3b82f6"/>
+  <text class="state-name" x="200" y="242">IDLE</text>
+  <text class="state-detail" x="200" y="266">대기</text>
+
+  <rect class="state" x="430" y="208" width="180" height="80" rx="18" fill="#dcfce7" stroke="#22a35a"/>
+  <text class="state-name" x="520" y="242">RUN</text>
+  <text class="state-detail" x="520" y="266">일반 달리기</text>
+
+  <rect class="state" x="850" y="208" width="190" height="80" rx="18" fill="#ffedd5" stroke="#f08c24"/>
+  <text class="state-name" x="945" y="242">AUTO_RUN</text>
+  <text class="state-detail" x="945" y="266">자동 달리기 · 5초</text>
+
+  <rect class="state" x="420" y="410" width="200" height="80" rx="18" fill="#ede9fe" stroke="#805ad5"/>
+  <text class="state-name" x="520" y="444">SLEEP</text>
+  <text class="state-detail" x="520" y="468">수면</text>
+
+  <text x="540" y="570" text-anchor="middle" class="hint">AUTO_RUN은 방향키를 누르면 RUN으로 취소되고, 5초 후 IDLE로 돌아갑니다.</text>
+</svg>
