@@ -13,11 +13,13 @@ class Boy:
     FRAME_WIDTH = 100
     RUN_SPEED = 200.0
     RUN_FRAME_DURATION = 0.05
+    STANDING_Y = 90
+    SLEEPING_Y = 50
     MIN_X = FRAME_WIDTH / 2
     MAX_X = CANVAS_WIDTH - FRAME_WIDTH / 2
 
     def __init__(self):
-        self.x, self.y = 400, 50
+        self.x, self.y = 400, self.STANDING_Y
         self.frame = 0
         self.face_dir = 1
         self.pressed_directions = []
@@ -32,10 +34,10 @@ class Boy:
             initial='IDLE',
             transitions=[
                 {'trigger': 'start_run', 'source': 'IDLE', 'dest': 'RUN', 'after': 'reset_run_animation'},
-                {'trigger': 'wake_and_run', 'source': 'SLEEP', 'dest': 'RUN', 'after': 'reset_run_animation'},
+                {'trigger': 'wake_and_run', 'source': 'SLEEP', 'dest': 'RUN', 'after': 'wake_from_sleep_and_run'},
                 {'trigger': 'stop_run', 'source': 'RUN', 'dest': 'IDLE', 'after': 'reset_idle_timer'},
                 {'trigger': 'fall_asleep', 'source': 'IDLE', 'dest': 'SLEEP', 'after': 'freeze_sleep_frame'},
-                {'trigger': 'wake_up', 'source': 'SLEEP', 'dest': 'IDLE', 'after': 'reset_idle_timer'},
+                {'trigger': 'wake_up', 'source': 'SLEEP', 'dest': 'IDLE', 'after': 'wake_from_sleep'},
                 {'trigger': 'start_auto_run', 'source': 'IDLE', 'dest': 'AUTO_RUN', 'after': 'enter_auto_run'},
                 {'trigger': 'cancel_auto_run', 'source': 'AUTO_RUN', 'dest': 'RUN', 'after': 'reset_run_animation'},
                 {'trigger': 'finish_auto_run', 'source': 'AUTO_RUN', 'dest': 'IDLE', 'after': 'reset_idle_timer'},
@@ -112,6 +114,15 @@ class Boy:
 
     def freeze_sleep_frame(self):
         self.frame = 0
+        self.y = self.SLEEPING_Y
+
+    def wake_from_sleep(self):
+        self.y = self.STANDING_Y
+        self.reset_idle_timer()
+
+    def wake_from_sleep_and_run(self):
+        self.y = self.STANDING_Y
+        self.reset_run_animation()
 
     def reset_idle_timer(self):
         self.idle_since = time.monotonic()

@@ -24,6 +24,23 @@ class AutoRunTests(unittest.TestCase):
         with patch('boy.load_image', return_value=self.image):
             self.boy = Boy()
 
+    def test_character_starts_at_standing_height(self):
+        self.assertEqual(self.boy.y, 90)
+
+    def test_sleeping_and_waking_updates_character_height(self):
+        self.boy.fall_asleep()
+        self.assertEqual(self.boy.y, 50)
+
+        self.boy.wake_up()
+        self.assertEqual(self.boy.y, 90)
+
+    def test_direction_key_wakes_sleeping_character_at_standing_height(self):
+        self.boy.fall_asleep()
+        self.boy.on_direction_key_down(1)
+
+        self.assertEqual(self.boy.state, 'RUN')
+        self.assertEqual(self.boy.y, 90)
+
     def start_auto_run(self, start_time=0.0):
         self.boy.on_auto_run_key_down()
         self.boy.auto_run.started_at = start_time
