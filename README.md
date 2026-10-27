@@ -31,3 +31,11 @@
 - 캐릭터 상태 로직은 `boy.py`에 있으며, 자동 런의 이동/시간 동작은 별도의 `AutoRun` 클래스가 담당합니다.
 
 실행 이미지(`animation_sheet.png`, `grass.png`)는 저장소 루트에 포함되어 있습니다.
+
+## 테스트
+
+자동 런의 시작, 2배 이동 속도, 화면 경계 반전, 5초 종료, 방향키 취소 및 확대 렌더링을 확인하려면 다음 명령을 실행합니다.
+
+```powershell
+python -m unittest discover -s tests -v
+```
