@@ -33,7 +33,7 @@
   <text x="528" y="132" text-anchor="middle" class="label">A 키</text>
 
   <path class="edge" d="M 850 286 C 770 378, 590 378, 515 286"/>
-  <text x="682" y="367" text-anchor="middle" class="label">← / → 누름</text>
+  <text x="760" y="398" text-anchor="middle" class="label">← / → 누름</text>
 
   <path class="edge" d="M 205 288 C 246 375, 370 428, 445 444"/>
   <text x="292" y="382" text-anchor="middle" class="label">5초 입력 없음</text>

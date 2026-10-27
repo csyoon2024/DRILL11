@@ -32,7 +32,9 @@
 
 ## 상태 다이어그램
 
-![캐릭터 상태 다이어그램](./state_diagram.svg)
+![캐릭터 상태 다이어그램](./state_diagram.png)
+
+벡터 원본: [state_diagram.svg](./state_diagram.svg)
 
 실행 이미지(`animation_sheet.png`, `grass.png`)는 저장소 루트에 포함되어 있습니다.
 
